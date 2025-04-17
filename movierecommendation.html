@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Movie Recommendation</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      scroll-behavior: smooth;
+    }
+
+    header {
+      background-color: #111;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .section {
+      padding: 4rem 2rem;
+    }
+
+    
+    #home {
+      background: url('https://wallpaperaccess.com/full/329583.jpg') center/cover no-repeat;
+      color: white;
+      height: 100vh;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    #home h1 {
+      font-size: 3rem;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+    }
+
+    
+    #recommendations {
+      background-color: #f4f4f4;
+    }
+
+    .search-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .search-container input {
+      padding: 0.6rem;
+      width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 6px 0 0 6px;
+      outline: none;
+    }
+
+    .search-container button {
+      padding: 0.6rem 1rem;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      font-weight: bold;
+      border-radius: 0 6px 6px 0;
+      cursor: pointer;
+    }
+
+    .movies {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .movie {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 200px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .movie img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .movie h3 {
+      padding: 0.5rem;
+    }
+
+    .rating {
+      color: #ffa500;
+      margin-bottom: 0.5rem;
+    }
+
+    
+    #about {
+      background-color: #222;
+      color: white;
+    }
+
+    #about h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    #about p {
+      max-width: 800px;
+      margin: auto;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    
+    footer {
+      background-color: #111;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>MovieZone</h2>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#recommendations">Recommendations</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <section id="home" class="section">
+    <h1>Find the Perfect Movie for Tonight!</h1>
+  </section>
+
+  <section id="recommendations" class="section">
+    <h2 style="text-align:center; margin-bottom: 2rem;">Movie Recommendations</h2>
+    <div class="search-container">
+      <input type="text" id="movieInput" placeholder="Search a movie...">
+      <button onclick="getRecommendations()">Get Recommendations</button>
+    </div>
+    <div id="movieList" class="movies"></div>
+  </section>
+
+  <section id="about" class="section">
+    <h2>About Us</h2>
+    <p>
+      MovieZone is your go-to platform for discovering amazing movies tailored to your taste.
+      Whether you're into action, romance, comedy, or thrillers, we help you find the best movies
+      to watch. We use a simple and fun recommendation engine to keep your movie nights exciting!
+    </p>
+  </section>
+
+  <footer>
+    &copy; 2025 MovieZone. All Rights Reserved.
+  </footer>
+
+  <script>
+    const sampleMovies = [
+      { title: "Inception", img: "https://m.media-amazon.com/images/I/51Y0R5N3TPL._AC_.jpg", rating: "8.8" },
+      { title: "Interstellar", img: "https://m.media-amazon.com/images/I/71nDPy7rM3L._AC_SL1000_.jpg", rating: "8.6" },
+      { title: "The Dark Knight", img: "https://m.media-amazon.com/images/I/81AJdOIEIhL._AC_SY679_.jpg", rating: "9.0" },
+      { title: "Parasite", img: "https://m.media-amazon.com/images/I/81xJ8avpYwL._AC_SY679_.jpg", rating: "8.6" },
+      { title: "Avengers: Endgame", img: "https://m.media-amazon.com/images/I/81ExhpBEbHL._AC_SY679_.jpg", rating: "8.4" }
+    ];
+
+    function getRecommendations() {
+      const input = document.getElementById('movieInput').value.toLowerCase();
+      const movieList = document.getElementById('movieList');
+      movieList.innerHTML = '';
+
+      const filtered = sampleMovies.filter(movie => movie.title.toLowerCase().includes(input));
+      const results = filtered.length ? filtered : sampleMovies;
+
+      results.forEach(movie => {
+        const div = document.createElement('div');
+        div.className = 'movie';
+        div.innerHTML = `
+          <img src="${movie.img}" alt="${movie.title}">
+          <h3>${movie.title}</h3>
+          <div class="rating">⭐ ${movie.rating}</div>
+        `;
+        movieList.appendChild(div);
+      });
+    }
+  </script>
+
+</body>
+</html>
+

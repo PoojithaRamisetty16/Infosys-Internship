@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Photography Portfolio</title>
+    <style>
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+    
+        .navbar {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        
+        .home-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://source.unsplash.com/random/1600x900/?photography');
+            background-size: cover;
+            background-position: center;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            border-radius: 8px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #6e8efb;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background-color: #5a7df5;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        
+        .gallery-page {
+            display: none;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature {
+            margin-bottom: 1.5rem;
+        }
+
+        .gallery-wrapper {
+            position: relative;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .gallery {
+            position: relative;
+            white-space: nowrap;
+            font-size: 0;
+            padding: 15px 0;
+            left: 0;
+        }
+
+        .item-wrapper {
+            cursor: pointer;
+            width: 23%;
+            display: inline-block;
+            padding: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .item-wrapper:hover {
+            transform: scale(1.03);
+        }
+
+        .r-3-2 {
+            width: 100%;
+            padding-bottom: 66.667%;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .image-holder {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item { opacity: 0.7; }
+        .gallery-item.active { opacity: 1; }
+
+        .controls {
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+
+        .move-btn {
+            border: none;
+            color: white;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            padding: 0.8rem 1.8rem;
+            margin: 0 10px;
+            cursor: pointer;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .move-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        
+        .content-page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: none;
+        }
+
+        .content-page h2 {
+            color: #6e8efb;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .content-page p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        
+        footer {
+            background: linear-gradient(135deg, #434343, #000000);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #6e8efb;
+        }
+
+        .copyright {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .item-wrapper {
+                width: 46%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="showPage('home')">PhotoPortfolio</a>
+            <div class="nav-links">
+                <a href="#" onclick="showPage('home')">Home</a>
+                <a href="#" onclick="showPage('gallery')">Gallery</a>
+                <a href="#" onclick="showPage('about')">About</a>
+                <a href="#" onclick="showPage('contact')">Contact</a>
+                <a href="#" onclick="showPage('blog')">Blog</a>
+            </div>
+        </div>
+    </nav>
+
+    
+    <div class="main-content">
+        
+        <div id="home-page">
+            <section class="home-hero">
+                <div class="hero-content">
+                    <h1>Welcome to My Photography World</h1>
+                    <p>Capturing life's precious moments through my lens. Explore my collection of stunning photographs that tell unique stories.</p>
+                    <a href="#" class="btn" onclick="showPage('gallery')">View My Gallery</a>
+                </div>
+            </section>
+            
+            <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+                <h2 style="color: #6e8efb; margin-bottom: 1.5rem;">My Featured Work</h2>
+                <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+                    <div style="width: 80%; height: 400px; background: url('https://source.unsplash.com/random/800x600/?nature') center/cover; border-radius: 8px;"></div>
+                </div>
+                <p style="max-width: 700px; margin: 0 auto 2rem;">This is my latest featured photograph. Click "View Gallery" to see more of my work.</p>
+            </div>
+        </div>
+
+        
+        <div id="gallery-page" class="gallery-page">
+            <h2 style="color: #6e8efb; text-align: center; margin-bottom: 2rem;">My Photo Gallery</h2>
+            
+            <div class="feature">
+                <figure class="featured-item image-holder r-3-2 transition"></figure>
+            </div>
+            
+            <div class="gallery-wrapper">
+                <div class="gallery">
+                    <div class="item-wrapper">
+                        <figure class="gallery-item image-holder r-3-2 active transition"></figure>
+                    </div>
+                    <div class="item-wrapper">
+                        <figure class="gallery-item image-holder r-3-2 transition"></figure>
+                    </div>
+                    <div class="item-wrapper">
+                        <figure class="gallery-item image-holder r-3-2 transition"></figure>
+                    </div>
+                    <div class="item-wrapper">
+                        <figure class="gallery-item image-holder r-3-2 transition"></figure>
+                    </div>
+                    <div class="item-wrapper">
+                        <figure class="gallery-item image-holder r-3-2 transition"></figure>
+                    </div>
+                    <div class="item-wrapper">
+                        <figure class="gallery-item image-holder r-3-2 transition"></figure>
+                    </div>
+                    <div class="item-wrapper">
+                        <figure class="gallery-item image-holder r-3-2 transition"></figure>
+                    </div>
+                    <div class="item-wrapper">
+                        <figure class="gallery-item image-holder r-3-2 transition"></figure>
+                    </div>
+                    <div class="item-wrapper">
+                        <figure class="gallery-item image-holder r-3-2 transition"></figure>
+                    </div>
+                    <div class="item-wrapper">
+                        <figure class="gallery-item image-holder r-3-2 transition"></figure>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button class="move-btn left">&larr; Previous</button>
+                <button class="move-btn right">Next &rarr;</button>
+            </div>
+        </div>
+
+        
+        <div id="about-page" class="content-page">
+            <h2>About Me</h2>
+            <p>I'm a passionate photographer with over 10 years of experience capturing special moments and beautiful landscapes. My journey began when I received my first camera as a birthday gift, and since then, I've been obsessed with freezing time through my lens.</p>
+            
+            <p>My work has been featured in several exhibitions and publications. I specialize in nature and portrait photography, but I'm always excited to explore new genres and techniques.</p>
+            
+            <h3>My Philosophy</h3>
+            <p>I believe photography isn't just about taking pictures - it's about telling stories, evoking emotions, and preserving memories. Every shot I take is a piece of my heart and soul.</p>
+            
+            <h3>Equipment I Use</h3>
+            <ul style="margin-left: 2rem; line-height: 1.7;">
+                <li>Canon EOS R5</li>
+                <li>Sony A7R IV</li>
+                <li>Various prime and zoom lenses</li>
+                <li>Professional lighting equipment</li>
+                <li>Drone photography gear</li>
+            </ul>
+        </div>
+
+        <
+        <div id="contact-page" class="content-page">
+            <h2>Contact Me</h2>
+            <p>I'd love to hear from you! Whether you're interested in a photoshoot, want to purchase prints, or just want to say hello, feel free to reach out.</p>
+            
+            <h3>Contact Information</h3>
+            <p><strong>Email:</strong> <a href="mailto:hello@myphotography.com">hello@myphotography.com</a></p>
+            <p><strong>Phone:</strong> (123) 456-7890</p>
+            <p><strong>Studio Address:</strong> 123 Photography Lane, Art District, City</p>
+            
+            <h3>Send Me a Message</h3>
+            <form style="max-width: 600px; margin-top: 1.5rem;">
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem;">Name</label>
+                    <input type="text" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem;">Email</label>
+                    <input type="email" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem;">Message</label>
+                    <textarea style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; min-height: 150px;"></textarea>
+                </div>
+                <button type="submit" style="background: #6e8efb; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 4px; cursor: pointer; font-weight: 600;">Send Message</button>
+            </form>
+        </div>
+
+        
+        <div id="blog-page" class="content-page">
+            <h2>Photography Blog</h2>
+            <p>Welcome to my blog where I share photography tips, behind-the-scenes stories, and thoughts about the art of photography.</p>
+            
+            <div style="margin-top: 2rem;">
+                <div style="border-bottom: 1px solid #eee; padding: 1.5rem 0;">
+                    <h3>The Magic of Golden Hour</h3>
+                    <p style="color: #666; margin-bottom: 0.5rem;">Posted on June 15, 2023</p>
+                    <p>Golden hour provides the most magical lighting conditions for photography. In this post, I share my tips for making the most of this special time of day...</p>
+                    <a href="#" style="color: #6e8efb; text-decoration: none; font-weight: 500;">Read More →</a>
+                </div>
+                
+                <div style="border-bottom: 1px solid #eee; padding: 1.5rem 0;">
+                    <h3>My Favorite Landscape Locations</h3>
+                    <p style="color: #666; margin-bottom: 0.5rem;">Posted on May 28, 2023</p>
+                    <p>After years of traveling, I've compiled a list of my favorite places to capture breathtaking landscapes. From mountain ranges to coastal views...</p>
+                    <a href="#" style="color: #6e8efb; text-decoration: none; font-weight: 500;">Read More →</a>
+                </div>
+                
+                <div style="border-bottom: 1px solid #eee; padding: 1.5rem 0;">
+                    <h3>Editing Workflow in Lightroom</h3>
+                    <p style="color: #666; margin-bottom: 0.5rem;">Posted on April 10, 2023</p>
+                    <p>A detailed walkthrough of my post-processing workflow in Adobe Lightroom. Learn how I enhance my photos while keeping them looking natural...</p>
+                    <a href="#" style="color: #6e8efb; text-decoration: none; font-weight: 500;">Read More →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" onclick="showPage('home')">Home</a>
+                <a href="#" onclick="showPage('gallery')">Gallery</a>
+                <a href="#" onclick="showPage('about')">About</a>
+                <a href="#" onclick="showPage('contact')">Contact</a>
+                <a href="#" onclick="showPage('blog')">Blog</a>
+            </div>
+            <div class="copyright">
+                &copy; 2023 My Photography Portfolio. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        
+        function showPage(pageId) {
+            
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('gallery-page').style.display = 'none';
+            document.getElementById('about-page').style.display = 'none';
+            document.getElementById('contact-page').style.display = 'none';
+            document.getElementById('blog-page').style.display = 'none';
+            
+            
+            document.getElementById(pageId + '-page').style.display = 'block';
+            
+            
+            if (pageId === 'gallery' && !window.galleryInitialized) {
+                initGallery();
+                window.galleryInitialized = true;
+            }
+            
+        
+            window.scrollTo(0, 0);
+        }
+
+        
+        showPage('home');
+
+        
+        function initGallery() {
+            var gallery = document.querySelector('.gallery');
+            var galleryItems = document.querySelectorAll('.gallery-item');
+            var numOfItems = gallery.children.length;
+            var itemWidth = 23; 
+
+            var featured = document.querySelector('.featured-item');
+
+            var leftBtn = document.querySelector('.move-btn.left');
+            var rightBtn = document.querySelector('.move-btn.right');
+            var leftInterval;
+            var rightInterval;
+
+            var scrollRate = 0.2;
+            var left = 0;
+
+            function selectItem(e) {
+                if (e.target.classList.contains('active')) return;
+                
+                featured.style.backgroundImage = e.target.style.backgroundImage;
+                
+                for (var i = 0; i < galleryItems.length; i++) {
+                    if (galleryItems[i].classList.contains('active'))
+                        galleryItems[i].classList.remove('active');
+                }
+                
+                e.target.classList.add('active');
+            }
+
+            function galleryWrapLeft() {
+                var first = gallery.children[0];
+                gallery.removeChild(first);
+                gallery.style.left = -itemWidth + '%';
+                gallery.appendChild(first);
+                gallery.style.left = '0%';
+            }
+
+            function galleryWrapRight() {
+                var last = gallery.children[gallery.children.length - 1];
+                gallery.removeChild(last);
+                gallery.insertBefore(last, gallery.children[0]);
+                gallery.style.left = '-23%';
+            }
+
+            function moveLeft() {
+                left = left || 0;
+
+                leftInterval = setInterval(function() {
+                    gallery.style.left = left + '%';
+
+                    if (left > -itemWidth) {
+                        left -= scrollRate;
+                    } else {
+                        left = 0;
+                        galleryWrapLeft();
+                    }
+                }, 1);
+            }
+
+            function moveRight() {
+                if (left > -itemWidth && left < 0) {
+                    left = left - itemWidth;
+                    
+                    var last = gallery.children[gallery.children.length - 1];
+                    gallery.removeChild(last);
+                    gallery.style.left = left + '%';
+                    gallery.insertBefore(last, gallery.children[0]);    
+                }
+                
+                left = left || 0;
+
+                leftInterval = setInterval(function() {
+                    gallery.style.left = left + '%';
+
+                    if (left < 0) {
+                        left += scrollRate;
+                    } else {
+                        left = -itemWidth;
+                        galleryWrapRight();
+                    }
+                }, 1);
+            }
+
+            function stopMovement() {
+                clearInterval(leftInterval);
+                clearInterval(rightInterval);
+            }
+
+            leftBtn.addEventListener('mouseenter', moveLeft);
+            leftBtn.addEventListener('mouseleave', stopMovement);
+            rightBtn.addEventListener('mouseenter', moveRight);
+            rightBtn.addEventListener('mouseleave', stopMovement);
+
+            
+            var images = [
+                'https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1433086966358-54859d0ed716?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1510784722466-f2aa9c52fff6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1505142468610-359e7d316be0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
+            ];
+            
+        
+            featured.style.backgroundImage = 'url(' + images[0] + ')';
+            
+            
+            for (var i = 0; i < galleryItems.length; i++) {
+                galleryItems[i].style.backgroundImage = 'url(' + images[i] + ')';
+                galleryItems[i].addEventListener('click', selectItem);
+            }
+        }
+    </script>
+</body>
+</html>
